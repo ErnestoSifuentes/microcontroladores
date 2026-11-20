@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430">
+<rect width="1100" height="430" fill="#fbfcfd" rx="18"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#173847">Medición correcta de corriente de la LaunchPad</text>
+<text x="40" y="76" font-size="16" fill="#5a727a">El amperímetro debe insertarse en serie con la alimentación del microcontrolador</text>
+<rect x="130" y="145" width="260" height="150" rx="16" fill="#eef4fb" stroke="#4e7fa2" stroke-width="3"/>
+<text x="260" y="178" text-anchor="middle" font-size="22" font-weight="700" fill="#244b6a">Fuente / USB</text>
+<line x1="390" y1="220" x2="470" y2="220" stroke="#294967" stroke-width="4"/>
+<circle cx="550" cy="220" r="48" fill="#fff" stroke="#2d6a6a" stroke-width="4"/>
+<text x="550" y="228" text-anchor="middle" font-size="32" fill="#2d6a6a">A</text>
+<text x="550" y="285" text-anchor="middle" font-size="16" fill="#2d6a6a">Amperímetro</text>
+<line x1="598" y1="220" x2="690" y2="220" stroke="#294967" stroke-width="4"/>
+<rect x="690" y="132" width="270" height="180" rx="18" fill="#e9f3ee" stroke="#2d867f" stroke-width="3"/>
+<text x="825" y="170" text-anchor="middle" font-size="22" font-weight="700" fill="#17635e">MSP430 LaunchPad</text>
+<rect x="730" y="205" width="90" height="45" rx="8" fill="#fff" stroke="#7ca39e"/><text x="775" y="233" text-anchor="middle" font-size="18" fill="#17635e">VCC</text>
+<rect x="830" y="205" width="90" height="45" rx="8" fill="#fff" stroke="#7ca39e"/><text x="875" y="233" text-anchor="middle" font-size="18" fill="#17635e">GND</text>
+<line x1="875" y1="250" x2="875" y2="285" stroke="#294967" stroke-width="4"/><line x1="855" y1="285" x2="895" y2="285" stroke="#294967" stroke-width="4"/><line x1="860" y1="298" x2="890" y2="298" stroke="#294967" stroke-width="4"/><line x1="865" y1="311" x2="885" y2="311" stroke="#294967" stroke-width="4"/>
+<text x="45" y="365" font-size="15" fill="#58727c">Medir corriente en paralelo produce un cortocircuito. La caída interna del amperímetro puede alterar la tensión efectiva del sistema.</text>
+</svg>

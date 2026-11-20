@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430">
+<rect width="1100" height="430" fill="#fbfcfd" rx="18"/>
+<text x="40" y="50" font-size="28" font-weight="700" fill="#173847">Esquema correcto de una salida digital con LED</text>
+<text x="40" y="78" font-size="16" fill="#5a727a">Ejemplo conceptual: P1.0 controla un LED mediante una resistencia limitadora</text>
+<rect x="80" y="130" width="290" height="190" rx="18" fill="#eef6fb" stroke="#5b7ea4" stroke-width="3"/>
+<text x="225" y="165" text-anchor="middle" font-size="22" font-weight="700" fill="#264967">MSP430G2553</text>
+<rect x="130" y="205" width="90" height="50" rx="8" fill="#ffffff" stroke="#7c97a9"/><text x="175" y="236" text-anchor="middle" font-size="20" fill="#294967">P1.0</text>
+<rect x="230" y="205" width="90" height="50" rx="8" fill="#ffffff" stroke="#7c97a9"/><text x="275" y="236" text-anchor="middle" font-size="20" fill="#294967">GND</text>
+<line x1="320" y1="230" x2="440" y2="230" stroke="#294967" stroke-width="4"/>
+<polyline points="440,230 460,230 470,215 490,245 510,215 530,245 550,215 570,245 580,230 610,230" fill="none" stroke="#8b5a2b" stroke-width="4"/>
+<text x="510" y="195" text-anchor="middle" font-size="18" fill="#7b4c1d">R<sub>L</sub> = 220 Ω a 1 kΩ</text>
+<line x1="610" y1="230" x2="670" y2="230" stroke="#294967" stroke-width="4"/>
+<polygon points="670,210 670,250 710,230" fill="none" stroke="#b24545" stroke-width="4"/>
+<line x1="715" y1="210" x2="715" y2="250" stroke="#b24545" stroke-width="4"/>
+<path d="M690 195 l12 -20" stroke="#b24545" stroke-width="3"/><path d="M710 195 l12 -20" stroke="#b24545" stroke-width="3"/>
+<path d="M706 176 l-1 -10 8 5z" fill="#b24545"/><path d="M726 176 l-1 -10 8 5z" fill="#b24545"/>
+<text x="692" y="278" text-anchor="middle" font-size="18" fill="#7b3e3e">LED</text>
+<line x1="715" y1="230" x2="840" y2="230" stroke="#294967" stroke-width="4"/>
+<line x1="840" y1="230" x2="840" y2="265" stroke="#294967" stroke-width="4"/>
+<line x1="820" y1="265" x2="860" y2="265" stroke="#294967" stroke-width="4"/>
+<line x1="825" y1="278" x2="855" y2="278" stroke="#294967" stroke-width="4"/>
+<line x1="830" y1="291" x2="850" y2="291" stroke="#294967" stroke-width="4"/>
+<text x="840" y="322" text-anchor="middle" font-size="18" fill="#294967">Tierra</text>
+<text x="80" y="378" font-size="15" fill="#58727c">El LED es un diodo emisor de luz; no es un capacitor. La resistencia limita la corriente y protege al pin y al dispositivo.</text>
+</svg>

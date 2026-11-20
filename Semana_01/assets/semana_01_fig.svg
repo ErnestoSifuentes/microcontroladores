@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420">
+<defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#eaf5f4"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+<rect width="1100" height="420" rx="18" fill="url(#g1)"/>
+<text x="40" y="52" font-size="28" font-weight="700" fill="#173847">Sistema de medición embebido</text>
+<text x="40" y="82" font-size="16" fill="#54707a">De la magnitud física al dato que procesa el microcontrolador</text>
+<g font-family="Arial" text-anchor="middle">
+<rect x="50" y="145" width="150" height="110" rx="16" fill="#d9eeec" stroke="#1c7b7a" stroke-width="3"/><text x="125" y="194" font-size="21" fill="#155b5d" font-weight="700">Fenómeno</text><text x="125" y="222" font-size="14" fill="#4b6a72">Temperatura, presión,</text><text x="125" y="242" font-size="14" fill="#4b6a72">posición, luz...</text>
+<rect x="250" y="145" width="150" height="110" rx="16" fill="#e5f3ef" stroke="#2c8681" stroke-width="3"/><text x="325" y="194" font-size="21" fill="#155b5d" font-weight="700">Sensor</text><text x="325" y="222" font-size="14" fill="#4b6a72">Transducción</text><text x="325" y="242" font-size="14" fill="#4b6a72">V = a x + b</text>
+<rect x="450" y="145" width="170" height="110" rx="16" fill="#eef4fb" stroke="#4e7fa2" stroke-width="3"/><text x="535" y="194" font-size="21" fill="#244b6a" font-weight="700">Acondicionamiento</text><text x="535" y="222" font-size="14" fill="#4b6a72">Ganancia, filtrado</text><text x="535" y="242" font-size="14" fill="#4b6a72">adaptación de nivel</text>
+<rect x="680" y="145" width="140" height="110" rx="16" fill="#eaf0fb" stroke="#5b7bb0" stroke-width="3"/><text x="750" y="194" font-size="21" fill="#29486b" font-weight="700">ADC</text><text x="750" y="222" font-size="14" fill="#4b6a72">Cuantificación</text><text x="750" y="242" font-size="14" fill="#4b6a72">Código N bits</text>
+<rect x="870" y="145" width="180" height="110" rx="16" fill="#f7ecda" stroke="#b88f4b" stroke-width="3"/><text x="960" y="194" font-size="21" fill="#73511d" font-weight="700">MSP430G2553</text><text x="960" y="222" font-size="14" fill="#4b6a72">Firmware, temporización</text><text x="960" y="242" font-size="14" fill="#4b6a72">decisión y salida</text>
+</g>
+<g stroke="#587784" stroke-width="4" fill="none"><path d="M202 200 H245"/><path d="M402 200 H445"/><path d="M622 200 H675"/><path d="M822 200 H865"/></g>
+<g fill="#587784"><path d="M242 191 l15 9 -15 9z"/><path d="M442 191 l15 9 -15 9z"/><path d="M672 191 l15 9 -15 9z"/><path d="M862 191 l15 9 -15 9z"/></g>
+<text x="40" y="335" font-size="15" fill="#5a727a">Una medición útil exige conversión física, acondicionamiento, cuantificación y procesamiento coherentes.</text>
+</svg>

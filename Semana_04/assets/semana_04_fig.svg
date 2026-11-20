@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430">
+<rect width="1100" height="430" fill="#fbfcfd" rx="18"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#173847">Vista didáctica de registros y operaciones con bits</text>
+<text x="40" y="76" font-size="16" fill="#5a727a">Cómo una máscara modifica selectivamente un registro del MSP430</text>
+<rect x="70" y="150" width="290" height="150" rx="16" fill="#eef4fb" stroke="#5b7ea4" stroke-width="3"/>
+<text x="215" y="183" text-anchor="middle" font-size="22" font-weight="700" fill="#254968">Registro P1OUT</text>
+<g font-family="monospace" font-size="28" fill="#173847" text-anchor="middle">
+<rect x="105" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="127.5" y="241">0</text>
+<rect x="150" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="172.5" y="241">0</text>
+<rect x="195" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="217.5" y="241">1</text>
+<rect x="240" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="262.5" y="241">0</text>
+<rect x="285" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="307.5" y="241">0</text>
+</g>
+<text x="215" y="282" text-anchor="middle" font-size="16" fill="#5b727c">... ejemplo parcial del patrón de bits</text>
+<text x="430" y="210" font-size="34" fill="#5a7480">OR con M = 0000 0010₂</text>
+<path d="M380 225 H415" stroke="#698794" stroke-width="4"/><path d="M400 213 l16 12 -16 12" fill="#698794"/>
+<rect x="740" y="150" width="290" height="150" rx="16" fill="#e8f4ee" stroke="#2d867f" stroke-width="3"/>
+<text x="885" y="183" text-anchor="middle" font-size="22" font-weight="700" fill="#17635e">Resultado SET</text>
+<g font-family="monospace" font-size="28" fill="#173847" text-anchor="middle">
+<rect x="775" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="797.5" y="241">0</text>
+<rect x="820" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="842.5" y="241">0</text>
+<rect x="865" y="210" width="45" height="45" fill="#e0f6ef" stroke="#1d7d74"/><text x="887.5" y="241">1</text>
+<rect x="910" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="932.5" y="241">0</text>
+<rect x="955" y="210" width="45" height="45" fill="#fff" stroke="#7f9aac"/><text x="977.5" y="241">0</text>
+</g>
+<text x="40" y="364" font-size="15" fill="#58727c">SET activa bits, CLEAR los borra y TOGGLE los invierte. La máscara determina qué posiciones se modifican.</text>
+</svg>

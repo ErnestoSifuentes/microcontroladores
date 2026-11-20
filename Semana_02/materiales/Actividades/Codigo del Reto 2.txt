@@ -1,0 +1,43 @@
+#include <msp430.h>
+
+/*
+ * Programa: Conmutación alternada de LEDs
+ * Dispositivo: MSP430G2553
+ *
+ * Descripción:
+ * Este programa configura los pines P1.0 y P1.6 como salidas digitales.
+ * Los LEDs conectados a dichos pines se encienden de forma alternada,
+ * con un tiempo de conmutación de aproximadamente dos segundos.
+ *
+ * Suposiciones:
+ * - El microcontrolador opera con el reloj DCO por defecto a 1 MHz.
+ * - El LED rojo está conectado a P1.0.
+ * - El LED verde está conectado a P1.6.
+ */
+
+void main(void)
+{
+    /* Detiene el watchdog timer */
+    WDTCTL = WDTPW | WDTHOLD;
+
+    /* Configura P1.0 y P1.6 como salidas */
+    P1DIR |= BIT0 | BIT6;
+
+    /* Estado inicial:
+     * P1.0 encendido
+     * P1.6 apagado
+     */
+    P1OUT |= BIT0;
+    P1OUT &= ~BIT6;
+
+    while (1)
+    {
+        /* Mantener el estado actual durante 2 segundos */
+        __delay_cycles(2000000);
+
+        /* Conmutar ambos LEDs:
+         * Si uno está encendido, el otro se apaga
+         */
+        P1OUT ^= (BIT0 | BIT6);
+    }
+}
