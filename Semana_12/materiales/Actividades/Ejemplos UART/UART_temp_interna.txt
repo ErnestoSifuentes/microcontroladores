@@ -1,0 +1,198 @@
+#include <msp430.h>
+
+volatile char rx_data = 0;
+volatile unsigned char streaming = 0;
+
+void clock_init(void)
+{
+    BCSCTL1 = CALBC1_1MHZ;
+    DCOCTL  = CALDCO_1MHZ;
+}
+
+void UART_init(void)
+{
+    P1SEL  |= BIT1 | BIT2;   /* P1.1 = RXD, P1.2 = TXD */
+    P1SEL2 |= BIT1 | BIT2;
+
+    UCA0CTL1 |= UCSWRST;
+    UCA0CTL1 |= UCSSEL_2;    /* SMCLK = 1 MHz */
+
+    UCA0BR0 = 104;           /* 9600 baud */
+    UCA0BR1 = 0;
+    UCA0MCTL = UCBRS0;
+
+    UCA0CTL1 &= ~UCSWRST;
+    IE2 |= UCA0RXIE;
+}
+
+void UART_sendChar(char c)
+{
+    while (!(IFG2 & UCA0TXIFG));
+    UCA0TXBUF = c;
+}
+
+void UART_sendString(const char *str)
+{
+    while (*str)
+    {
+        UART_sendChar(*str++);
+    }
+}
+
+void UART_sendUInt(unsigned int value)
+{
+    char buf[6];
+    unsigned int i = 0;
+
+    if (value == 0)
+    {
+        UART_sendChar('0');
+        return;
+    }
+
+    while (value > 0)
+    {
+        buf[i++] = (value % 10) + '0';
+        value /= 10;
+    }
+
+    while (i > 0)
+    {
+        UART_sendChar(buf[--i]);
+    }
+}
+
+void UART_sendInt(long value)
+{
+    if (value < 0)
+    {
+        UART_sendChar('-');
+        value = -value;
+    }
+
+    UART_sendUInt((unsigned int)value);
+}
+
+void delay_ms(unsigned int ms)
+{
+    while (ms--)
+    {
+        __delay_cycles(1000);   /* 1 ms con DCO = 1 MHz */
+    }
+}
+
+unsigned int ADC_readTempRaw(void)
+{
+    ADC10CTL1 = INCH_10 + ADC10DIV_3;
+    ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON;
+
+    delay_ms(5);               /* tiempo de estabilizacion de referencia */
+
+    ADC10CTL0 |= ENC + ADC10SC;
+    while (ADC10CTL1 & ADC10BUSY);
+
+    return ADC10MEM;
+}
+
+long ADC_readTempDeciC(void)
+{
+    unsigned int raw;
+    long mv;
+    long temp_dC;
+
+    raw = ADC_readTempRaw();
+
+    /* Aproximacion tipica para sensor interno del MSP430 con Vref = 1.5 V
+       Vtemp(25 C) ~ 986 mV, pendiente ~ 3.55 mV/C */
+    mv = ((long)raw * 1500L) / 1023L;
+    temp_dC = (((mv - 986L) * 1000L) / 355L) + 250L;
+
+    return temp_dC;
+}
+
+void UART_sendTemperature(long temp_dC)
+{
+    long entero;
+    long decimal;
+
+    entero = temp_dC / 10;
+    decimal = temp_dC % 10;
+    if (decimal < 0)
+        decimal = -decimal;
+
+    UART_sendString("Temperatura interna: ");
+    UART_sendInt(entero);
+    UART_sendChar('.');
+    UART_sendUInt((unsigned int)decimal);
+    UART_sendString(" C\r\n");
+}
+
+void UART_showMenu(void)
+{
+    UART_sendString("\r\n=== SENSOR DE TEMPERATURA INTERNO ===\r\n");
+    UART_sendString("2 -> Iniciar envio cada 1 s\r\n");
+    UART_sendString("3 -> Detener envio\r\n");
+}
+
+int main(void)
+{
+    WDTCTL = WDTPW | WDTHOLD;
+
+    clock_init();
+    UART_init();
+
+    P1DIR |= BIT0;
+    P1OUT &= ~BIT0;
+
+    __enable_interrupt();
+
+    UART_showMenu();
+
+    while (1)
+    {
+        if (rx_data == '2')
+        {
+            streaming = 1;
+            rx_data = 0;
+            UART_sendString("Inicio de envio...\r\n");
+            P1OUT |= BIT0;
+        }
+        else if (rx_data == '3')
+        {
+            streaming = 0;
+            rx_data = 0;
+            UART_sendString("Envio detenido.\r\n");
+            P1OUT &= ~BIT0;
+        }
+
+        if (streaming)
+        {
+            unsigned int i;
+            long temp_dC = ADC_readTempDeciC();
+            UART_sendTemperature(temp_dC);
+
+            for (i = 0; i < 1000; i++)
+            {
+                delay_ms(1);
+
+                if (rx_data == '3')
+                {
+                    streaming = 0;
+                    rx_data = 0;
+                    UART_sendString("Envio detenido.\r\n");
+                    P1OUT &= ~BIT0;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+#pragma vector=USCIAB0RX_VECTOR
+__interrupt void USCI0RX_ISR(void)
+{
+    if (IFG2 & UCA0RXIFG)
+    {
+        rx_data = UCA0RXBUF;
+    }
+}

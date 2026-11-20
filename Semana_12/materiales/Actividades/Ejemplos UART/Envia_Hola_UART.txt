@@ -1,0 +1,53 @@
+#include <msp430.h>
+
+void clock_init(void)
+{
+    BCSCTL1 = CALBC1_1MHZ;
+    DCOCTL  = CALDCO_1MHZ;
+}
+
+void UART_init(void)
+{
+    P1SEL  |= BIT1 | BIT2;   // P1.1=RXD, P1.2=TXD
+    P1SEL2 |= BIT1 | BIT2;
+
+    UCA0CTL1 |= UCSWRST;
+    UCA0CTL1 |= UCSSEL_2;    // SMCLK = 1 MHz
+
+    UCA0BR0 = 104;           // 9600 baud
+    UCA0BR1 = 0;
+    UCA0MCTL = UCBRS0;
+
+    UCA0CTL1 &= ~UCSWRST;
+}
+
+void UART_sendChar(char c)
+{
+    while (!(IFG2 & UCA0TXIFG));
+    UCA0TXBUF = c;
+}
+
+void UART_sendString(char *str)
+{
+    while (*str)
+    {
+        UART_sendChar(*str++);
+    }
+}
+
+int main(void)
+{
+    WDTCTL = WDTPW | WDTHOLD;
+
+    clock_init();
+    UART_init();
+
+    P1DIR |= BIT0;   // LED para indicar que el programa corre
+
+    while (1)
+    {
+        P1OUT ^= BIT0;
+        UART_sendString("Hola\r\n");
+        __delay_cycles(1000000);
+    }
+}
