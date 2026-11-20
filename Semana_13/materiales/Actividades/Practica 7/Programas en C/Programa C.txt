@@ -1,0 +1,111 @@
+#include <msp430.h>
+
+volatile unsigned int adc_raw = 0;
+volatile unsigned char adc_ready = 0;
+
+void uart_init(void)
+{
+    P1SEL  |= BIT1 | BIT2;
+    P1SEL2 |= BIT1 | BIT2;
+
+    UCA0CTL1 |= UCSSEL_2;
+    UCA0BR0 = 104;
+    UCA0BR1 = 0;
+    UCA0MCTL = UCBRS0;
+    UCA0CTL1 &= ~UCSWRST;
+}
+
+void uart_tx(char c)
+{
+    while (!(IFG2 & UCA0TXIFG));
+    UCA0TXBUF = c;
+}
+
+void uart_tx_string(char *s)
+{
+    while(*s) uart_tx(*s++);
+}
+
+void uart_tx_num(unsigned int n)
+{
+    char buffer[6];
+    int i = 0;
+
+    if(n == 0)
+    {
+        uart_tx('0');
+        return;
+    }
+
+    while(n > 0)
+    {
+        buffer[i++] = (n % 10) + '0';
+        n /= 10;
+    }
+
+    while(i > 0)
+    {
+        uart_tx(buffer[--i]);
+    }
+}
+
+void uart_tx_voltage(unsigned int adc)
+{
+    unsigned long mv;
+    unsigned int entero, decimal;
+
+    mv = ((unsigned long)adc * 3300UL) / 1023UL;
+    entero = mv / 1000;
+    decimal = mv % 1000;
+
+    uart_tx_num(entero);
+    uart_tx('.');
+    uart_tx((decimal / 100) + '0');
+    uart_tx(((decimal / 10) % 10) + '0');
+    uart_tx((decimal % 10) + '0');
+}
+
+void adc_init_a5(void)
+{
+    ADC10AE0 |= BIT5;                       // A5
+    ADC10CTL1 = INCH_5 | ADC10DIV_0;       // Canal A5
+    ADC10CTL0 = ADC10SHT_2 | ADC10IE | ADC10ON;
+}
+
+void adc_start(void)
+{
+    adc_ready = 0;
+    ADC10CTL0 &= ~ADC10IFG;
+    ADC10CTL0 |= ENC | ADC10SC;
+}
+
+int main(void)
+{
+    WDTCTL = WDTPW | WDTHOLD;
+
+    uart_init();
+    adc_init_a5();
+    __bis_SR_register(GIE);
+
+    while(1)
+    {
+        adc_start();
+        while(!adc_ready);
+
+        uart_tx_string("PT100 -> ADC = ");
+        uart_tx_num(adc_raw);
+        uart_tx_string("   V = ");
+        uart_tx_voltage(adc_raw);
+        uart_tx_string(" V\r\n");
+
+        __delay_cycles(200000);
+    }
+}
+
+#pragma vector=ADC10_VECTOR
+__interrupt void ADC10_ISR(void)
+{
+    adc_raw = ADC10MEM;
+    adc_ready = 1;
+    ADC10CTL0 &= ~ENC;
+}
