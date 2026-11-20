@@ -1,0 +1,47 @@
+#include <msp430.h>
+
+/*
+ * Ejemplo: Interrupción externa en P1.3
+ * Función: Cada vez que se presiona el botón,
+ *          el LED en P1.0 cambia de estado (toggle).
+ */
+
+void main(void)
+{
+    WDTCTL = WDTPW | WDTHOLD;   // 1. Detener el watchdog
+
+    // --- Configuración del LED (P1.0) ---
+    P1DIR |= BIT0;              // 2. Configurar P1.0 como salida
+    P1OUT &= ~BIT0;             // 3. Inicializar LED apagado
+
+    // --- Configuración del botón (P1.3) ---
+    P1DIR &= ~BIT3;             // 4. Configurar P1.3 como entrada
+    P1REN |= BIT3;              // 5. Habilitar resistencia interna
+    P1OUT |= BIT3;              // 6. Seleccionar resistencia pull-up
+
+    P1IES |= BIT3;              // 7. Interrupción por flanco de bajada
+    P1IFG &= ~BIT3;             // 8. Limpiar bandera de interrupción
+    P1IE  |= BIT3;              // 9. Habilitar interrupción en P1.3
+
+    __bis_SR_register(LPM0_bits + GIE);  // 10. Entrar en bajo consumo + habilitar interrupciones
+
+    while(1)
+    {
+        // El programa principal no hace nada.
+        // Todo ocurre cuando se activa la interrupción.
+    }
+}
+
+/*
+ * Rutina de Servicio de Interrupción (ISR)
+ * Se ejecuta automáticamente cuando ocurre
+ * la interrupción en el puerto 1.
+ */
+
+#pragma vector=PORT1_VECTOR
+__interrupt void Port_1(void)
+{
+    P1OUT ^= BIT0;      // 11. Toggle del LED (cambia de estado)
+
+    P1IFG &= ~BIT3;     // 12. Limpiar bandera para evitar re-disparo
+}
